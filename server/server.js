@@ -7,6 +7,7 @@ var {Post} = require('./models/post');
 var {User} = require('./models/user');
 
 var app = express();
+const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 
@@ -42,16 +43,37 @@ app.get('/posts/:id', function (req, res) {
         if (!post){
             return res.status(404).send();
         }
-        
+
         res.send({post});
-    }, function (e) {
+    }).catch( function (e) {
+        res.status(400).send();
+    });
+
+
+});
+
+app.delete('/posts/:id', function (req, res) {
+
+    var id = req.params.id;
+
+    if (!ObjectID.isValid(id)){
+        return res.status(404).send();
+    }
+
+    Post.findByIdAndRemove(id).then(function (post) {
+        if (!post){
+            return res.status(404).send();
+        }
+
+        res.send({post});
+    }).catch( function (e) {
         res.status(400).send();
     });
 
 });
 
-app.listen(3000, function () {
-    console.log('Started on port 3000')
+app.listen(port, function () {
+    console.log(`Started on port ${port}`)
 });
 
 module.exports = {app};
