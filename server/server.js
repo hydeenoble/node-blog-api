@@ -22,6 +22,17 @@ app.post('/posts', function (req, res) {
     });
 });
 
+app.get('/posts', function (req, res) {
+    Post.find().then(function (posts) {
+        res.send({posts});
+    }, function (e) {
+        res.status(400).send(e);
+    });
+});
+
+
 app.listen(3000, function () {
     console.log('Started on port 3000')
 });
+
+module.exports = {app};

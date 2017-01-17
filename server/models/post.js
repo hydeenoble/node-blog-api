@@ -18,6 +18,4 @@ var Post = mongoose.model('Post', {
     }
 });
 
-module.exports = {
-    Post:Post
-}
+module.exports = {Post};
